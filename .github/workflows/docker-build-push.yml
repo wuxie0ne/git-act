@@ -2,7 +2,7 @@ name: Docker Build and Push
 
 on:
   issues:
-    types: [opened]
+    types: [opened, edited]
     labels: build
 
 jobs:

@@ -3,7 +3,7 @@ name: Sync Dokcer Image To Aliyun Repo By Api
 
 on:
   repository_dispatch:
-    types: sync-docker
+    types: [sync-docker]
 
 jobs:
   sync-task:

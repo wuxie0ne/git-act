@@ -1,0 +1,32 @@
+name: 'Run Daily Diagnostics'
+
+on:
+  schedule:
+    - cron: '0 1 * * *' # 每天 1 点
+  workflow_dispatch:
+
+jobs:
+  collection-and-upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: collection-agent
+        run: |
+          echo "System check on $(date). All systems are go." > diagnostic-log.txt
+      - name: upload-artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: diagnostic-report
+          path: diagnostic-log.txt
+          retention-days: 30
+  notify-admin:
+    needs: collection-and-upload
+    runs-on: ubuntu-latest
+    steps:
+      - name: download
+        uses: actions/download-artifact@v5
+        with:
+          name: diagnostic-report
+      - name: notify
+        run: |
+          cat  diagnostic-log.txt
+

@@ -1,0 +1,34 @@
+name: 'Track Blog Title Daily'
+
+on:
+  schedule:
+    # 每天 UTC 时间 0 点运行
+    - cron: '0 0 * * *'
+  # 也加入手动触发，方便我们立即测试，而不用等一天
+  workflow_dispatch:
+
+jobs:
+  track-title:
+    runs-on: ubuntu-latest
+    
+    # 关键点：为这一个 job 授予写权限
+    permissions:
+      contents: write
+      
+    steps:
+      # 步骤 1: 拉取代码
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 步骤 2: 运行任务，生成结果文件
+      - name: Generate result file
+        run: |
+          echo "My blog title on $(date)" > blog-title.txt
+
+      # 步骤 3: 自动提交和推送变更
+      - name: Commit and push if content changed
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "feat: Update daily blog title tracking"
+          # 可选：指定要提交的文件，更安全
+          file_pattern: blog-title.txt 

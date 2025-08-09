@@ -73,7 +73,7 @@ jobs:
         run: |
           SOURCE_IMAGE="${{ github.event.inputs.source_image }}"
           # 从上一步的输出中读取目标镜像名称
-          DESTINATION_IMAGE="${{ secrets.DOCKER_REGISTRY }}/${{ steps.generate_name.outputs.dest_image }}"
+          DESTINATION_IMAGE="${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_NAMESPACE }}/${{ steps.generate_name.outputs.dest_image }}"
           
           echo "Pulling $SOURCE_IMAGE"
           docker pull $SOURCE_IMAGE

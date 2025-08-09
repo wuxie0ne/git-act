@@ -40,7 +40,7 @@ jobs:
           fi
           
           # 默认行为：处理 'alpine:3.21' 这种官方镜像
-          DEST="mirror-docker/library/$SOURCE"
+          DEST="mirror-docker.library.$SOURCE"
 
           # 如果源镜像包含'/'，说明它有仓库地址或用户名
           if [[ "$SOURCE" == *"/"* ]]; then
@@ -53,15 +53,15 @@ jobs:
 
             if [ "$PREFIX" != "null" ] && [ -n "$PREFIX" ]; then
               # 成功在 map 中找到前缀
-              DEST="$PREFIX/$IMAGE_PATH"
+              DEST="$PREFIX.$IMAGE_PATH"
             elif [[ "$HOSTNAME" != *"."* ]]; then
               # 未在 map 中找到，且不含'.', 认为是 Docker Hub 用户, e.g., 'bitnami/nginx'
-              DEST="mirror-docker/$HOSTNAME/$IMAGE_PATH"
+              DEST="mirror-docker.$HOSTNAME.$IMAGE_PATH"
             else
               # 未在 map 中找到，但是一个域名，使用通用规则
               # e.g., registry.example.com -> mirror-registry-example-com
               SAFE_PREFIX=$(echo $HOSTNAME | tr '.' '-')
-              DEST="mirror-unknown/$SAFE_PREFIX/$IMAGE_PATH"
+              DEST="mirror-unknown.$SAFE_PREFIX.$IMAGE_PATH"
             fi
           fi
           
@@ -74,7 +74,6 @@ jobs:
           SOURCE_IMAGE="${{ github.event.inputs.source_image }}"
           # 从上一步的输出中读取目标镜像名称
           DESTINATION_IMAGE="${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_NAMESPACE }}/${{ steps.generate_name.outputs.dest_image }}"
-          
           echo "Pulling $SOURCE_IMAGE"
           docker pull $SOURCE_IMAGE
           

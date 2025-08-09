@@ -1,7 +1,7 @@
 FROM amazoncorretto:8u422
 
 RUN yum update -y && \
-    yum install -y tar rsync && \
+    yum install -y tar rsync curl && \
     yum clean all
 
 

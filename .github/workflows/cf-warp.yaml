@@ -1,0 +1,18 @@
+name: 'Cloudflare Wrap'
+on:
+  workflow_dispatch:
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+    steps:
+    - name: init ip
+      runs: |
+        curl cip.cc
+    - name: Set up WARP
+      uses: fscarmen/warp-on-actions@v1.3
+      with:
+        stack: dual
+        mode: wireguard
+    - name: echo ip
+      runs: |
+        curl cip.cc

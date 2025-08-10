@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: init ip
-      runs: |
+      run: |
         curl cip.cc
     - name: Set up WARP
       uses: fscarmen/warp-on-actions@v1.3
@@ -14,5 +14,5 @@ jobs:
         stack: dual
         mode: wireguard
     - name: echo ip
-      runs: |
+      run: |
         curl cip.cc
